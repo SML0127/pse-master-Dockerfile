@@ -31,8 +31,8 @@ Create pse database
 - grant select,usage,update on all sequences in schema public to pse; 
 - grant execute on all functions in schema public to pse; grant references, trigger on all tables in schema public to pse; 
 - grant create on schema public to pse; grant usage on schema public to pse;
-- ALTER USER pse WITH PASSWORD 'pse';
-- CREATE ROLE postgres WITH SUPERUSER
+- alter user pse with password 'pse';
+- create role postgres with superuser
 
 Create tables in pse database
 - psql < pse_database.schema
@@ -40,8 +40,8 @@ Create tables in pse database
 
 Create airflow database
 - create user airflow password 'airflow';
-- CREATE DATABASE airflow;
-- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO airflow;
+- create database airflow;
+- grant all privileges on all tables in schema public to airflow;
 
 Set psql configuration
 - Add (host    all             all             0.0.0.0/0               md5 ) to /etc/postgresql/12/main/pg_hba.conf
