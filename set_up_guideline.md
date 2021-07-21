@@ -3,8 +3,7 @@ Set up guideline for pse master server
 =============
 
 
-1. Set up locale
--------------
+# 1. Set up locale
 
 
 sudo locale-gen ko_KR.UTF-8
@@ -12,8 +11,7 @@ sudo dpkg-reconfigure locales
 
 
 
-2. Set up postgresql
--------------
+# 2. Set up postgresql
 
 
 vi ~/.bashrc
@@ -54,8 +52,7 @@ listen_addresses = ‘*’ # for Airflow connection
 
 
 
-3. Install airflow version 2.1.1
--------------
+# 3. Install airflow version 2.1.1
 
 
 pip install apache-airflow[rabbitmq,celery]==2.1.1  --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.1.1/constraints-3.6.txt"
