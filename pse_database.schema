@@ -1,0 +1,2848 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.4 (Ubuntu 12.4-1.pgdg16.04+1)
+-- Dumped by pg_dump version 12.4 (Ubuntu 12.4-1.pgdg16.04+1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'SQL_ASCII';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: account; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.account (
+    user_id character varying(50) NOT NULL,
+    password character varying(2048) NOT NULL,
+    is_dev boolean,
+    normal_user_id character varying(50)
+);
+
+
+ALTER TABLE public.account OWNER TO pse;
+
+--
+-- Name: all_uploaded_product; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.all_uploaded_product (
+    job_id integer,
+    execution_id integer,
+    mpid integer,
+    origin_product text,
+    converted_product text,
+    targetsite_url character varying(2048),
+    upload_time timestamp without time zone DEFAULT now() NOT NULL,
+    cnum integer,
+    status integer
+);
+
+
+ALTER TABLE public.all_uploaded_product OWNER TO pse;
+
+--
+-- Name: all_uploaded_product_old_schema; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.all_uploaded_product_old_schema (
+    job_id integer,
+    execution_id integer,
+    mpid integer,
+    origin_product json,
+    converted_product json,
+    targetsite_url character varying(2048),
+    upload_time timestamp without time zone,
+    cnum integer
+);
+
+
+ALTER TABLE public.all_uploaded_product_old_schema OWNER TO pse;
+
+--
+-- Name: cafe24_client_id; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.cafe24_client_id (
+    id integer NOT NULL,
+    mall_id character varying(128),
+    client_id character varying(128),
+    client_secret character varying(128),
+    use_now integer DEFAULT '-1'::integer,
+    get_time timestamp without time zone,
+    job_id integer
+);
+
+
+ALTER TABLE public.cafe24_client_id OWNER TO pse;
+
+--
+-- Name: cafe24_client_id_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+ALTER TABLE public.cafe24_client_id ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.cafe24_client_id_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: category; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.category (
+    id bigint NOT NULL,
+    name character varying(1048),
+    category text
+);
+
+
+ALTER TABLE public.category OWNER TO pse;
+
+--
+-- Name: category_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.category_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.category_id_seq OWNER TO pse;
+
+--
+-- Name: category_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.category_id_seq OWNED BY public.category.id;
+
+
+--
+-- Name: category_tree; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.category_tree (
+    id integer NOT NULL,
+    category_tree text NOT NULL,
+    user_id character varying(50) NOT NULL,
+    targetsite_id integer NOT NULL
+);
+
+
+ALTER TABLE public.category_tree OWNER TO pse;
+
+--
+-- Name: category_tree_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.category_tree_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.category_tree_id_seq OWNER TO pse;
+
+--
+-- Name: category_tree_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.category_tree_id_seq OWNED BY public.category_tree.id;
+
+
+--
+-- Name: check_is_error; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.check_is_error (
+    id integer NOT NULL,
+    job_id integer,
+    exec_id integer,
+    is_error integer
+);
+
+
+ALTER TABLE public.check_is_error OWNER TO pse;
+
+--
+-- Name: check_is_error_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+ALTER TABLE public.check_is_error ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.check_is_error_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: delivery_companies; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.delivery_companies (
+    id integer NOT NULL,
+    user_id character varying(50),
+    name character varying(2048)
+);
+
+
+ALTER TABLE public.delivery_companies OWNER TO pse;
+
+--
+-- Name: delivery_companies_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.delivery_companies_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.delivery_companies_id_seq OWNER TO pse;
+
+--
+-- Name: delivery_companies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.delivery_companies_id_seq OWNED BY public.delivery_companies.id;
+
+
+--
+-- Name: delivery_countries; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.delivery_countries (
+    id integer NOT NULL,
+    user_id character varying(50),
+    country_code character varying(2048)
+);
+
+
+ALTER TABLE public.delivery_countries OWNER TO pse;
+
+--
+-- Name: delivery_countries_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.delivery_countries_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.delivery_countries_id_seq OWNER TO pse;
+
+--
+-- Name: delivery_countries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.delivery_countries_id_seq OWNED BY public.delivery_countries.id;
+
+
+--
+-- Name: exchange_rate; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.exchange_rate (
+    id integer NOT NULL,
+    user_id character varying(50),
+    exchange_rate json,
+    update_time character varying(128)
+);
+
+
+ALTER TABLE public.exchange_rate OWNER TO pse;
+
+--
+-- Name: exchange_rate_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.exchange_rate_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.exchange_rate_id_seq OWNER TO pse;
+
+--
+-- Name: exchange_rate_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.exchange_rate_id_seq OWNED BY public.exchange_rate.id;
+
+
+--
+-- Name: execution; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.execution (
+    id bigint NOT NULL,
+    previous_id bigint,
+    program_id bigint,
+    category_id integer,
+    category_no integer,
+    start_time timestamp without time zone,
+    end_time timestamp without time zone,
+    job_id integer,
+    num_success integer,
+    num_all integer,
+    num_fail integer,
+    num_invalid integer
+);
+
+
+ALTER TABLE public.execution OWNER TO pse;
+
+--
+-- Name: execution_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.execution_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.execution_id_seq OWNER TO pse;
+
+--
+-- Name: execution_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.execution_id_seq OWNED BY public.execution.id;
+
+
+--
+-- Name: execution_output; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.execution_output (
+    execution_id bigint,
+    output json
+);
+
+
+ALTER TABLE public.execution_output OWNER TO pse;
+
+--
+-- Name: failed_my_site_detail; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.failed_my_site_detail (
+    id integer NOT NULL,
+    sm_history_id integer,
+    mpid bigint,
+    err_msg text,
+    err_time timestamp without time zone DEFAULT now()
+);
+
+
+ALTER TABLE public.failed_my_site_detail OWNER TO pse;
+
+--
+-- Name: failed_my_site_detail_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+ALTER TABLE public.failed_my_site_detail ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.failed_my_site_detail_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: failed_target_site_detail; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.failed_target_site_detail (
+    id integer NOT NULL,
+    mt_history_id integer,
+    mpid bigint,
+    err_msg text,
+    err_time timestamp without time zone DEFAULT now()
+);
+
+
+ALTER TABLE public.failed_target_site_detail OWNER TO pse;
+
+--
+-- Name: failed_target_site_detail_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+ALTER TABLE public.failed_target_site_detail ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.failed_target_site_detail_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: failed_task_detail; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.failed_task_detail (
+    task_id bigint NOT NULL,
+    err_msg text,
+    err_time timestamp without time zone DEFAULT now()
+);
+
+
+ALTER TABLE public.failed_task_detail OWNER TO pse;
+
+--
+-- Name: gateway_configuration; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.gateway_configuration (
+    id integer NOT NULL,
+    user_id character varying(50),
+    configuration_label character varying(1024),
+    configuration text
+);
+
+
+ALTER TABLE public.gateway_configuration OWNER TO pse;
+
+--
+-- Name: gateway_configuration_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.gateway_configuration_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.gateway_configuration_id_seq OWNER TO pse;
+
+--
+-- Name: gateway_configuration_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.gateway_configuration_id_seq OWNED BY public.gateway_configuration.id;
+
+
+--
+-- Name: group_job; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.group_job (
+    id integer NOT NULL,
+    type character varying(2048),
+    last_update timestamp without time zone
+);
+
+
+ALTER TABLE public.group_job OWNER TO pse;
+
+--
+-- Name: group_job_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.group_job_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.group_job_id_seq OWNER TO pse;
+
+--
+-- Name: group_job_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.group_job_id_seq OWNED BY public.group_job.id;
+
+
+--
+-- Name: groups; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.groups (
+    id integer,
+    label character varying(2048),
+    user_id character varying(50)
+);
+
+
+ALTER TABLE public.groups OWNER TO pse;
+
+--
+-- Name: job_configuration; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_configuration (
+    job_id integer,
+    start_date timestamp without time zone,
+    end_date timestamp without time zone,
+    period integer,
+    m_category character varying(2048),
+    targetsite_id character varying(2048),
+    t_category character varying(2048),
+    transformation_program_id integer,
+    id integer NOT NULL,
+    last_update timestamp without time zone,
+    last_sm_date timestamp without time zone,
+    last_mt_date timestamp without time zone,
+    num_worker integer,
+    num_thread integer,
+    cid integer,
+    cnum integer,
+    upid integer,
+    tsid integer
+);
+
+
+ALTER TABLE public.job_configuration OWNER TO pse;
+
+--
+-- Name: job_configuration_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.job_configuration_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.job_configuration_id_seq OWNER TO pse;
+
+--
+-- Name: job_configuration_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.job_configuration_id_seq OWNED BY public.job_configuration.id;
+
+
+--
+-- Name: job_current_working; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_current_working (
+    id integer NOT NULL,
+    job_id integer,
+    crawling_working text DEFAULT 'Nothing running'::text,
+    mysite_working text DEFAULT 'Nothing running'::text,
+    targetsite_working text DEFAULT 'Nothing running'::text,
+    update_time timestamp without time zone DEFAULT now()
+);
+
+
+ALTER TABLE public.job_current_working OWNER TO pse;
+
+--
+-- Name: job_current_working_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.job_current_working_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.job_current_working_id_seq OWNER TO pse;
+
+--
+-- Name: job_current_working_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.job_current_working_id_seq OWNED BY public.job_current_working.id;
+
+
+--
+-- Name: job_description_source_view; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_description_source_view (
+    job_id integer,
+    mpid integer,
+    key text,
+    value text
+);
+
+
+ALTER TABLE public.job_description_source_view OWNER TO pse;
+
+--
+-- Name: job_description_source_view_backup; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_description_source_view_backup (
+    job_id integer,
+    mpid integer,
+    key character varying(2048),
+    value text
+);
+
+
+ALTER TABLE public.job_description_source_view_backup OWNER TO pse;
+
+--
+-- Name: job_description_source_view_new; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_description_source_view_new (
+    mpid integer,
+    key text,
+    value text
+);
+
+
+ALTER TABLE public.job_description_source_view_new OWNER TO pse;
+
+--
+-- Name: job_description_source_view_new_backup; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_description_source_view_new_backup (
+    mpid integer,
+    key text,
+    value text
+);
+
+
+ALTER TABLE public.job_description_source_view_new_backup OWNER TO pse;
+
+--
+-- Name: job_id_and_mpid; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_id_and_mpid (
+    job_id integer,
+    mpid integer
+);
+
+
+ALTER TABLE public.job_id_and_mpid OWNER TO pse;
+
+--
+-- Name: job_id_and_mpid_backup; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_id_and_mpid_backup (
+    job_id integer,
+    mpid integer
+);
+
+
+ALTER TABLE public.job_id_and_mpid_backup OWNER TO pse;
+
+--
+-- Name: site_code; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.site_code
+    START WITH 10001
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.site_code OWNER TO pse;
+
+--
+-- Name: job_id_to_site_code; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_id_to_site_code (
+    site_code integer DEFAULT nextval('public.site_code'::regclass),
+    job_id integer
+);
+
+
+ALTER TABLE public.job_id_to_site_code OWNER TO pse;
+
+--
+-- Name: job_option_source_view; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_option_source_view (
+    job_id integer,
+    mpid integer,
+    option_name text,
+    option_value text,
+    list_price character varying(64),
+    price character varying(64),
+    stock integer,
+    stock_status integer,
+    msg character varying(2048),
+    option_name_translated text,
+    option_value_translated text
+);
+
+
+ALTER TABLE public.job_option_source_view OWNER TO pse;
+
+--
+-- Name: job_option_source_view_backup; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_option_source_view_backup (
+    job_id integer,
+    mpid integer,
+    option_name character varying(2048),
+    option_value character varying(2048),
+    list_price character varying(64),
+    price character varying(64),
+    stock integer,
+    stock_status integer,
+    msg character varying(2048)
+);
+
+
+ALTER TABLE public.job_option_source_view_backup OWNER TO pse;
+
+--
+-- Name: job_option_source_view_new; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_option_source_view_new (
+    mpid integer,
+    option_name text,
+    option_value text,
+    list_price character varying(64),
+    price character varying(64),
+    stock integer,
+    stock_status integer,
+    msg text
+);
+
+
+ALTER TABLE public.job_option_source_view_new OWNER TO pse;
+
+--
+-- Name: job_option_source_view_new_backup; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_option_source_view_new_backup (
+    mpid integer,
+    option_name text,
+    option_value text,
+    list_price character varying(64),
+    price character varying(64),
+    stock integer,
+    stock_status integer,
+    msg text
+);
+
+
+ALTER TABLE public.job_option_source_view_new_backup OWNER TO pse;
+
+--
+-- Name: my_product_id; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.my_product_id
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.my_product_id OWNER TO pse;
+
+--
+-- Name: job_source_view; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_source_view (
+    id integer NOT NULL,
+    job_id integer,
+    mpid integer DEFAULT nextval('public.my_product_id'::regclass),
+    status integer,
+    c_date timestamp without time zone,
+    sm_date timestamp without time zone,
+    url text,
+    url_sha256 character varying(64),
+    name text,
+    name_sha256 character varying(64),
+    price text,
+    stock text,
+    image_url text,
+    num_options integer,
+    num_images integer,
+    m_category text,
+    tpid character varying(128),
+    groupby_key_sha256 character varying(64),
+    shipping_price text,
+    brand text,
+    weight text,
+    shipping_weight text,
+    dimension_weight text,
+    source_site_product_id text,
+    currency text,
+    name_translated text,
+    description_translated text,
+    description_rendered text,
+    description text,
+    bundle_price text,
+    bundle_price_currency text,
+    location text,
+    description1 text,
+    description2 text,
+    description1_rendered text,
+    description2_rendered text
+);
+
+
+ALTER TABLE public.job_source_view OWNER TO pse;
+
+--
+-- Name: job_source_view_backup; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_source_view_backup (
+    id integer,
+    job_id integer,
+    mpid integer,
+    status integer,
+    c_date timestamp without time zone,
+    sm_date timestamp without time zone,
+    url character varying(2048),
+    url_sha256 character varying(64),
+    p_name character varying(2048),
+    p_name_sha256 character varying(64),
+    sku character varying(2048),
+    list_price character varying(64),
+    price character varying(64),
+    stock character varying(64),
+    origin character varying(2048),
+    company character varying(2048),
+    image_url character varying(2048),
+    num_options integer,
+    num_images integer,
+    m_category character varying(2048),
+    tpid character varying(128),
+    groupby_key_sha256 character varying(64),
+    spid character varying(128)
+);
+
+
+ALTER TABLE public.job_source_view_backup OWNER TO pse;
+
+--
+-- Name: job_source_view_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+ALTER TABLE public.job_source_view ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.job_source_view_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: job_source_view_new; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_source_view_new (
+    id integer,
+    mpid integer,
+    status integer,
+    c_date timestamp without time zone,
+    sm_date timestamp without time zone,
+    url text,
+    url_sha256 character varying(64),
+    p_name text,
+    p_name_sha256 character varying(64),
+    sku text,
+    list_price text,
+    price text,
+    stock character varying(64),
+    origin text,
+    company text,
+    image_url text,
+    num_options integer,
+    num_images integer,
+    m_category text,
+    tpid character varying(128),
+    groupby_key_sha256 character varying(64),
+    spid character varying(128)
+);
+
+
+ALTER TABLE public.job_source_view_new OWNER TO pse;
+
+--
+-- Name: job_source_view_new_backup; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_source_view_new_backup (
+    id integer,
+    mpid integer,
+    status integer,
+    c_date timestamp without time zone,
+    sm_date timestamp without time zone,
+    url text,
+    url_sha256 character varying(64),
+    p_name text,
+    p_name_sha256 character varying(64),
+    sku text,
+    list_price text,
+    price text,
+    stock character varying(64),
+    origin text,
+    company text,
+    image_url text,
+    num_options integer,
+    num_images integer,
+    m_category text,
+    tpid character varying(128),
+    groupby_key_sha256 character varying(64),
+    spid character varying(128)
+);
+
+
+ALTER TABLE public.job_source_view_new_backup OWNER TO pse;
+
+--
+-- Name: job_thumbnail_source_view; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_thumbnail_source_view (
+    job_id integer,
+    mpid integer,
+    image_url text,
+    image_url_sha256 character varying(64),
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.job_thumbnail_source_view OWNER TO pse;
+
+--
+-- Name: job_thumbnail_source_view_backup; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_thumbnail_source_view_backup (
+    job_id integer,
+    mpid integer,
+    image_url character varying(2048),
+    image_url_sha256 character varying(64)
+);
+
+
+ALTER TABLE public.job_thumbnail_source_view_backup OWNER TO pse;
+
+--
+-- Name: job_thumbnail_source_view_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.job_thumbnail_source_view_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.job_thumbnail_source_view_id_seq OWNER TO pse;
+
+--
+-- Name: job_thumbnail_source_view_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.job_thumbnail_source_view_id_seq OWNED BY public.job_thumbnail_source_view.id;
+
+
+--
+-- Name: job_thumbnail_source_view_new; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_thumbnail_source_view_new (
+    mpid integer,
+    image_url text,
+    image_url_sha256 character varying(64)
+);
+
+
+ALTER TABLE public.job_thumbnail_source_view_new OWNER TO pse;
+
+--
+-- Name: job_thumbnail_source_view_new_backup; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_thumbnail_source_view_new_backup (
+    mpid integer,
+    image_url text,
+    image_url_sha256 character varying(64)
+);
+
+
+ALTER TABLE public.job_thumbnail_source_view_new_backup OWNER TO pse;
+
+--
+-- Name: job_update_statistics_history; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.job_update_statistics_history (
+    job_id integer,
+    up_to_date integer DEFAULT 0,
+    changed integer DEFAULT 0,
+    new_item integer DEFAULT 0,
+    deleted integer DEFAULT 0,
+    upload_time timestamp without time zone DEFAULT now() NOT NULL
+);
+
+
+ALTER TABLE public.job_update_statistics_history OWNER TO pse;
+
+--
+-- Name: jobs; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.jobs (
+    id integer,
+    parent_id integer,
+    label character varying(2048),
+    user_id character varying(50),
+    count integer,
+    last_update timestamp with time zone,
+    url character varying(2048),
+    country character varying(2048),
+    site integer
+);
+
+
+ALTER TABLE public.jobs OWNER TO pse;
+
+--
+-- Name: mt_history; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.mt_history (
+    id integer NOT NULL,
+    sm_history_id bigint,
+    start_time timestamp without time zone,
+    end_time timestamp without time zone,
+    targetsite text,
+    job_id integer
+);
+
+
+ALTER TABLE public.mt_history OWNER TO pse;
+
+--
+-- Name: mt_history_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+ALTER TABLE public.mt_history ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.mt_history_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: mt_period; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.mt_period (
+    id integer NOT NULL,
+    user_id character varying(50),
+    job_id integer,
+    start_date timestamp without time zone,
+    period integer
+);
+
+
+ALTER TABLE public.mt_period OWNER TO pse;
+
+--
+-- Name: mt_period_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.mt_period_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.mt_period_id_seq OWNER TO pse;
+
+--
+-- Name: mt_period_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.mt_period_id_seq OWNED BY public.mt_period.id;
+
+
+--
+-- Name: my_site_category_tree; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.my_site_category_tree (
+    id integer NOT NULL,
+    category_tree text NOT NULL,
+    user_id character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.my_site_category_tree OWNER TO pse;
+
+--
+-- Name: my_site_category_tree_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.my_site_category_tree_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.my_site_category_tree_id_seq OWNER TO pse;
+
+--
+-- Name: my_site_category_tree_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.my_site_category_tree_id_seq OWNED BY public.my_site_category_tree.id;
+
+
+--
+-- Name: mysite_compare_key; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.mysite_compare_key (
+    id integer NOT NULL,
+    job_id integer,
+    key_name character varying(128)
+);
+
+
+ALTER TABLE public.mysite_compare_key OWNER TO pse;
+
+--
+-- Name: mysite_compare_key_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.mysite_compare_key_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.mysite_compare_key_id_seq OWNER TO pse;
+
+--
+-- Name: mysite_compare_key_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.mysite_compare_key_id_seq OWNED BY public.mysite_compare_key.id;
+
+
+--
+-- Name: mysite_translate_key; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.mysite_translate_key (
+    id integer NOT NULL,
+    job_id integer,
+    key_name character varying(128)
+);
+
+
+ALTER TABLE public.mysite_translate_key OWNER TO pse;
+
+--
+-- Name: mysite_translate_key_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.mysite_translate_key_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.mysite_translate_key_id_seq OWNER TO pse;
+
+--
+-- Name: mysite_translate_key_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.mysite_translate_key_id_seq OWNED BY public.mysite_translate_key.id;
+
+
+--
+-- Name: node; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.node (
+    id bigint NOT NULL,
+    parent_id bigint,
+    task_id bigint,
+    label integer
+);
+
+
+ALTER TABLE public.node OWNER TO pse;
+
+--
+-- Name: node_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.node_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.node_id_seq OWNER TO pse;
+
+--
+-- Name: node_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.node_id_seq OWNED BY public.node.id;
+
+
+--
+-- Name: node_property; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.node_property (
+    id bigint NOT NULL,
+    node_id bigint,
+    key character varying(1048),
+    value json,
+    job_id integer,
+    execution_id integer
+);
+
+
+ALTER TABLE public.node_property OWNER TO pse;
+
+--
+-- Name: node_property_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.node_property_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.node_property_id_seq OWNER TO pse;
+
+--
+-- Name: node_property_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.node_property_id_seq OWNED BY public.node_property.id;
+
+
+--
+-- Name: pricing_information; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.pricing_information (
+    id integer NOT NULL,
+    job_id integer,
+    targetsite_id integer,
+    category character varying(1024),
+    exchange_rate double precision,
+    tariff_rate double precision,
+    vat_rate double precision,
+    tariff_threshold double precision,
+    margin_rate double precision,
+    min_margin double precision,
+    delivery_company character varying(2048),
+    shipping_cost double precision
+);
+
+
+ALTER TABLE public.pricing_information OWNER TO pse;
+
+--
+-- Name: pricing_information_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.pricing_information_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.pricing_information_id_seq OWNER TO pse;
+
+--
+-- Name: pricing_information_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.pricing_information_id_seq OWNED BY public.pricing_information.id;
+
+
+--
+-- Name: product_option_view; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.product_option_view (
+    id integer NOT NULL,
+    user_id character varying(50),
+    job_id integer,
+    option_name character varying(1024),
+    option_value character varying(1024),
+    product_id character varying(1024),
+    price integer,
+    selling_price integer,
+    stock integer,
+    msg text
+);
+
+
+ALTER TABLE public.product_option_view OWNER TO pse;
+
+--
+-- Name: product_option_view_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.product_option_view_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.product_option_view_id_seq OWNER TO pse;
+
+--
+-- Name: product_option_view_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.product_option_view_id_seq OWNED BY public.product_option_view.id;
+
+
+--
+-- Name: products; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.products (
+    id integer NOT NULL,
+    user_id character varying(50),
+    job_id integer,
+    name character varying(1024),
+    product_id character varying(1024),
+    my_product_id character varying(1024),
+    product_url character varying(1024),
+    brand character varying(1024),
+    sku character varying(1024),
+    price integer,
+    selling_price integer,
+    origin character varying(1024),
+    manufacturer character varying(1024),
+    status integer
+);
+
+
+ALTER TABLE public.products OWNER TO pse;
+
+--
+-- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.products_id_seq OWNER TO pse;
+
+--
+-- Name: products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.products_id_seq OWNED BY public.products.id;
+
+
+--
+-- Name: program; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.program (
+    id bigint NOT NULL,
+    name character varying(1048),
+    program text
+);
+
+
+ALTER TABLE public.program OWNER TO pse;
+
+--
+-- Name: program_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.program_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.program_id_seq OWNER TO pse;
+
+--
+-- Name: program_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.program_id_seq OWNED BY public.program.id;
+
+
+--
+-- Name: registered_schedules; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.registered_schedules (
+    id integer NOT NULL,
+    user_id character varying(50),
+    job_id integer,
+    start_date character varying(100),
+    end_date character varying(100),
+    period integer,
+    activate boolean DEFAULT false,
+    targetsites text
+);
+
+
+ALTER TABLE public.registered_schedules OWNER TO pse;
+
+--
+-- Name: registered_schedules_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.registered_schedules_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.registered_schedules_id_seq OWNER TO pse;
+
+--
+-- Name: registered_schedules_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.registered_schedules_id_seq OWNED BY public.registered_schedules.id;
+
+
+--
+-- Name: registered_workers; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.registered_workers (
+    id integer NOT NULL,
+    ip character varying(32),
+    port integer
+);
+
+
+ALTER TABLE public.registered_workers OWNER TO pse;
+
+--
+-- Name: registered_workers_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.registered_workers_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.registered_workers_id_seq OWNER TO pse;
+
+--
+-- Name: registered_workers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.registered_workers_id_seq OWNED BY public.registered_workers.id;
+
+
+--
+-- Name: selected_mpid_pricing_information; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.selected_mpid_pricing_information (
+    id integer NOT NULL,
+    job_id integer,
+    mpid integer,
+    min_margin double precision,
+    margin_rate double precision,
+    shipping_cost double precision,
+    min_price double precision
+);
+
+
+ALTER TABLE public.selected_mpid_pricing_information OWNER TO pse;
+
+--
+-- Name: selected_mpid_pricing_information_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.selected_mpid_pricing_information_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.selected_mpid_pricing_information_id_seq OWNER TO pse;
+
+--
+-- Name: selected_mpid_pricing_information_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.selected_mpid_pricing_information_id_seq OWNED BY public.selected_mpid_pricing_information.id;
+
+
+--
+-- Name: shipping_fee; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.shipping_fee (
+    id integer NOT NULL,
+    user_id character varying(50),
+    delivery_company_id integer,
+    country character varying(2048),
+    min_kg double precision,
+    max_kg double precision,
+    fee double precision
+);
+
+
+ALTER TABLE public.shipping_fee OWNER TO pse;
+
+--
+-- Name: shipping_fee_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.shipping_fee_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.shipping_fee_id_seq OWNER TO pse;
+
+--
+-- Name: shipping_fee_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.shipping_fee_id_seq OWNED BY public.shipping_fee.id;
+
+
+--
+-- Name: sm_history; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.sm_history (
+    id integer NOT NULL,
+    execution_id integer,
+    start_time timestamp without time zone,
+    end_time timestamp without time zone,
+    job_id integer
+);
+
+
+ALTER TABLE public.sm_history OWNER TO pse;
+
+--
+-- Name: sm_history_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+ALTER TABLE public.sm_history ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.sm_history_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: sm_period; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.sm_period (
+    id integer NOT NULL,
+    user_id character varying(50),
+    job_id integer,
+    start_date timestamp without time zone,
+    period integer
+);
+
+
+ALTER TABLE public.sm_period OWNER TO pse;
+
+--
+-- Name: sm_period_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.sm_period_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.sm_period_id_seq OWNER TO pse;
+
+--
+-- Name: sm_period_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.sm_period_id_seq OWNED BY public.sm_period.id;
+
+
+--
+-- Name: smpid; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.smpid
+    START WITH 1001
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.smpid OWNER TO pse;
+
+--
+-- Name: stage; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.stage (
+    id bigint NOT NULL,
+    execution_id bigint,
+    level integer,
+    start_time timestamp without time zone,
+    end_time timestamp without time zone
+);
+
+
+ALTER TABLE public.stage OWNER TO pse;
+
+--
+-- Name: stage_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.stage_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.stage_id_seq OWNER TO pse;
+
+--
+-- Name: stage_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.stage_id_seq OWNED BY public.stage.id;
+
+
+--
+-- Name: stage_output; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.stage_output (
+    stage_id bigint,
+    output json
+);
+
+
+ALTER TABLE public.stage_output OWNER TO pse;
+
+--
+-- Name: targetsite; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.targetsite (
+    id integer NOT NULL,
+    user_id character varying(50),
+    name character varying(2048),
+    url character varying(2048),
+    gateway character varying(2048),
+    registration_date timestamp without time zone,
+    update_date timestamp without time zone
+);
+
+
+ALTER TABLE public.targetsite OWNER TO pse;
+
+--
+-- Name: targetsite_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.targetsite_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.targetsite_id_seq OWNER TO pse;
+
+--
+-- Name: targetsite_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.targetsite_id_seq OWNED BY public.targetsite.id;
+
+
+--
+-- Name: targetsite_job_configuration; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.targetsite_job_configuration (
+    id integer NOT NULL,
+    job_id integer,
+    targetsite_id integer,
+    targetsite_label character varying(2048),
+    targetsite_url character varying(2048),
+    t_category character varying(2048),
+    transformation_program_id integer,
+    cid integer,
+    cnum integer,
+    exchange_rate double precision,
+    tariff_rate double precision,
+    vat_rate double precision,
+    tariff_threshold double precision,
+    margin_rate double precision,
+    min_margin double precision,
+    delivery_company character varying(2048),
+    shipping_cost double precision,
+    max_num_items integer,
+    default_weight double precision,
+    checked boolean DEFAULT false
+);
+
+
+ALTER TABLE public.targetsite_job_configuration OWNER TO pse;
+
+--
+-- Name: targetsite_job_configuration_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.targetsite_job_configuration_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.targetsite_job_configuration_id_seq OWNER TO pse;
+
+--
+-- Name: targetsite_job_configuration_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.targetsite_job_configuration_id_seq OWNED BY public.targetsite_job_configuration.id;
+
+
+--
+-- Name: tariff_vat_rate; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.tariff_vat_rate (
+    id integer NOT NULL,
+    user_id character varying(50),
+    category character varying(1024),
+    tariff_rate double precision,
+    vat_rate double precision
+);
+
+
+ALTER TABLE public.tariff_vat_rate OWNER TO pse;
+
+--
+-- Name: tariff_vat_rate_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.tariff_vat_rate_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tariff_vat_rate_id_seq OWNER TO pse;
+
+--
+-- Name: tariff_vat_rate_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.tariff_vat_rate_id_seq OWNED BY public.tariff_vat_rate.id;
+
+
+--
+-- Name: task; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.task (
+    id bigint NOT NULL,
+    stage_id bigint,
+    parent_id bigint,
+    previous_id bigint,
+    status integer,
+    start_time timestamp without time zone,
+    end_time timestamp without time zone
+);
+
+
+ALTER TABLE public.task OWNER TO pse;
+
+--
+-- Name: task_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.task_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.task_id_seq OWNER TO pse;
+
+--
+-- Name: task_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.task_id_seq OWNED BY public.task.id;
+
+
+--
+-- Name: task_input; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.task_input (
+    task_id bigint,
+    input json
+);
+
+
+ALTER TABLE public.task_input OWNER TO pse;
+
+--
+-- Name: task_output; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.task_output (
+    task_id bigint,
+    input json,
+    output json
+);
+
+
+ALTER TABLE public.task_output OWNER TO pse;
+
+--
+-- Name: test; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.test (
+    id integer NOT NULL,
+    price double precision,
+    name character varying(25)
+);
+
+
+ALTER TABLE public.test OWNER TO pse;
+
+--
+-- Name: test_char; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.test_char (
+    string text
+);
+
+
+ALTER TABLE public.test_char OWNER TO pse;
+
+--
+-- Name: test_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.test_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.test_id_seq OWNER TO pse;
+
+--
+-- Name: test_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.test_id_seq OWNED BY public.test.id;
+
+
+--
+-- Name: tpid_mapping; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.tpid_mapping (
+    job_id integer,
+    mpid integer NOT NULL,
+    targetsite_url character varying(256) NOT NULL,
+    tpid integer,
+    upload_time timestamp without time zone DEFAULT now()
+);
+
+
+ALTER TABLE public.tpid_mapping OWNER TO pse;
+
+--
+-- Name: transformation; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.transformation (
+    id bigint NOT NULL,
+    script text
+);
+
+
+ALTER TABLE public.transformation OWNER TO pse;
+
+--
+-- Name: transformation_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.transformation_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.transformation_id_seq OWNER TO pse;
+
+--
+-- Name: transformation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.transformation_id_seq OWNED BY public.transformation.id;
+
+
+--
+-- Name: transformation_program; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.transformation_program (
+    id integer NOT NULL,
+    user_id character varying(50),
+    program_label character varying(1024),
+    transformation_program text
+);
+
+
+ALTER TABLE public.transformation_program OWNER TO pse;
+
+--
+-- Name: transformation_program_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.transformation_program_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.transformation_program_id_seq OWNER TO pse;
+
+--
+-- Name: transformation_program_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.transformation_program_id_seq OWNED BY public.transformation_program.id;
+
+
+--
+-- Name: url_and_zipcode; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.url_and_zipcode (
+    id integer NOT NULL,
+    url text,
+    zipcode text
+);
+
+
+ALTER TABLE public.url_and_zipcode OWNER TO pse;
+
+--
+-- Name: url_and_zipcode_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+ALTER TABLE public.url_and_zipcode ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.url_and_zipcode_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: url_to_mpid; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.url_to_mpid (
+    my_product_id integer DEFAULT nextval('public.my_product_id'::regclass),
+    url character varying(2048),
+    insert_time timestamp without time zone DEFAULT now()
+);
+
+
+ALTER TABLE public.url_to_mpid OWNER TO pse;
+
+--
+-- Name: user_program; Type: TABLE; Schema: public; Owner: pse
+--
+
+CREATE TABLE public.user_program (
+    id integer NOT NULL,
+    site character varying(2048) NOT NULL,
+    description character varying(2048) NOT NULL,
+    program json NOT NULL,
+    job_id integer,
+    update_time timestamp without time zone DEFAULT now() NOT NULL
+);
+
+
+ALTER TABLE public.user_program OWNER TO pse;
+
+--
+-- Name: user_program_id_seq; Type: SEQUENCE; Schema: public; Owner: pse
+--
+
+CREATE SEQUENCE public.user_program_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_program_id_seq OWNER TO pse;
+
+--
+-- Name: user_program_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pse
+--
+
+ALTER SEQUENCE public.user_program_id_seq OWNED BY public.user_program.id;
+
+
+--
+-- Name: category id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.category ALTER COLUMN id SET DEFAULT nextval('public.category_id_seq'::regclass);
+
+
+--
+-- Name: category_tree id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.category_tree ALTER COLUMN id SET DEFAULT nextval('public.category_tree_id_seq'::regclass);
+
+
+--
+-- Name: delivery_companies id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.delivery_companies ALTER COLUMN id SET DEFAULT nextval('public.delivery_companies_id_seq'::regclass);
+
+
+--
+-- Name: delivery_countries id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.delivery_countries ALTER COLUMN id SET DEFAULT nextval('public.delivery_countries_id_seq'::regclass);
+
+
+--
+-- Name: exchange_rate id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.exchange_rate ALTER COLUMN id SET DEFAULT nextval('public.exchange_rate_id_seq'::regclass);
+
+
+--
+-- Name: execution id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.execution ALTER COLUMN id SET DEFAULT nextval('public.execution_id_seq'::regclass);
+
+
+--
+-- Name: gateway_configuration id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.gateway_configuration ALTER COLUMN id SET DEFAULT nextval('public.gateway_configuration_id_seq'::regclass);
+
+
+--
+-- Name: group_job id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.group_job ALTER COLUMN id SET DEFAULT nextval('public.group_job_id_seq'::regclass);
+
+
+--
+-- Name: job_configuration id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.job_configuration ALTER COLUMN id SET DEFAULT nextval('public.job_configuration_id_seq'::regclass);
+
+
+--
+-- Name: job_current_working id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.job_current_working ALTER COLUMN id SET DEFAULT nextval('public.job_current_working_id_seq'::regclass);
+
+
+--
+-- Name: job_thumbnail_source_view id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.job_thumbnail_source_view ALTER COLUMN id SET DEFAULT nextval('public.job_thumbnail_source_view_id_seq'::regclass);
+
+
+--
+-- Name: mt_period id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.mt_period ALTER COLUMN id SET DEFAULT nextval('public.mt_period_id_seq'::regclass);
+
+
+--
+-- Name: my_site_category_tree id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.my_site_category_tree ALTER COLUMN id SET DEFAULT nextval('public.my_site_category_tree_id_seq'::regclass);
+
+
+--
+-- Name: mysite_compare_key id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.mysite_compare_key ALTER COLUMN id SET DEFAULT nextval('public.mysite_compare_key_id_seq'::regclass);
+
+
+--
+-- Name: mysite_translate_key id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.mysite_translate_key ALTER COLUMN id SET DEFAULT nextval('public.mysite_translate_key_id_seq'::regclass);
+
+
+--
+-- Name: node id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.node ALTER COLUMN id SET DEFAULT nextval('public.node_id_seq'::regclass);
+
+
+--
+-- Name: node_property id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.node_property ALTER COLUMN id SET DEFAULT nextval('public.node_property_id_seq'::regclass);
+
+
+--
+-- Name: pricing_information id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.pricing_information ALTER COLUMN id SET DEFAULT nextval('public.pricing_information_id_seq'::regclass);
+
+
+--
+-- Name: product_option_view id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.product_option_view ALTER COLUMN id SET DEFAULT nextval('public.product_option_view_id_seq'::regclass);
+
+
+--
+-- Name: products id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.products ALTER COLUMN id SET DEFAULT nextval('public.products_id_seq'::regclass);
+
+
+--
+-- Name: program id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.program ALTER COLUMN id SET DEFAULT nextval('public.program_id_seq'::regclass);
+
+
+--
+-- Name: registered_schedules id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.registered_schedules ALTER COLUMN id SET DEFAULT nextval('public.registered_schedules_id_seq'::regclass);
+
+
+--
+-- Name: registered_workers id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.registered_workers ALTER COLUMN id SET DEFAULT nextval('public.registered_workers_id_seq'::regclass);
+
+
+--
+-- Name: selected_mpid_pricing_information id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.selected_mpid_pricing_information ALTER COLUMN id SET DEFAULT nextval('public.selected_mpid_pricing_information_id_seq'::regclass);
+
+
+--
+-- Name: shipping_fee id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.shipping_fee ALTER COLUMN id SET DEFAULT nextval('public.shipping_fee_id_seq'::regclass);
+
+
+--
+-- Name: sm_period id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.sm_period ALTER COLUMN id SET DEFAULT nextval('public.sm_period_id_seq'::regclass);
+
+
+--
+-- Name: stage id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.stage ALTER COLUMN id SET DEFAULT nextval('public.stage_id_seq'::regclass);
+
+
+--
+-- Name: targetsite id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.targetsite ALTER COLUMN id SET DEFAULT nextval('public.targetsite_id_seq'::regclass);
+
+
+--
+-- Name: targetsite_job_configuration id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.targetsite_job_configuration ALTER COLUMN id SET DEFAULT nextval('public.targetsite_job_configuration_id_seq'::regclass);
+
+
+--
+-- Name: tariff_vat_rate id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.tariff_vat_rate ALTER COLUMN id SET DEFAULT nextval('public.tariff_vat_rate_id_seq'::regclass);
+
+
+--
+-- Name: task id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.task ALTER COLUMN id SET DEFAULT nextval('public.task_id_seq'::regclass);
+
+
+--
+-- Name: test id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.test ALTER COLUMN id SET DEFAULT nextval('public.test_id_seq'::regclass);
+
+
+--
+-- Name: transformation id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.transformation ALTER COLUMN id SET DEFAULT nextval('public.transformation_id_seq'::regclass);
+
+
+--
+-- Name: transformation_program id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.transformation_program ALTER COLUMN id SET DEFAULT nextval('public.transformation_program_id_seq'::regclass);
+
+
+--
+-- Name: user_program id; Type: DEFAULT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.user_program ALTER COLUMN id SET DEFAULT nextval('public.user_program_id_seq'::regclass);
+
+
+--
+-- Name: account account_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.account
+    ADD CONSTRAINT account_pkey PRIMARY KEY (user_id);
+
+
+--
+-- Name: cafe24_client_id cafe24_client_id_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.cafe24_client_id
+    ADD CONSTRAINT cafe24_client_id_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: category category_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.category
+    ADD CONSTRAINT category_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: category_tree category_tree_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.category_tree
+    ADD CONSTRAINT category_tree_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: check_is_error check_is_error_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.check_is_error
+    ADD CONSTRAINT check_is_error_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: account constraint_name; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.account
+    ADD CONSTRAINT constraint_name UNIQUE (user_id);
+
+
+--
+-- Name: delivery_companies delivery_companies_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.delivery_companies
+    ADD CONSTRAINT delivery_companies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: delivery_countries delivery_countries_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.delivery_countries
+    ADD CONSTRAINT delivery_countries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: exchange_rate exchange_rate_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.exchange_rate
+    ADD CONSTRAINT exchange_rate_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: execution execution_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.execution
+    ADD CONSTRAINT execution_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: failed_my_site_detail failed_my_site_detail_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.failed_my_site_detail
+    ADD CONSTRAINT failed_my_site_detail_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: failed_target_site_detail failed_target_site_detail_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.failed_target_site_detail
+    ADD CONSTRAINT failed_target_site_detail_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: failed_task_detail failed_task_detail_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.failed_task_detail
+    ADD CONSTRAINT failed_task_detail_pkey PRIMARY KEY (task_id);
+
+
+--
+-- Name: gateway_configuration gateway_configuration_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.gateway_configuration
+    ADD CONSTRAINT gateway_configuration_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: job_current_working job_current_working_job_id_key; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.job_current_working
+    ADD CONSTRAINT job_current_working_job_id_key UNIQUE (job_id);
+
+
+--
+-- Name: job_id_and_mpid job_id_and_mpid_job_id_mpid_key; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.job_id_and_mpid
+    ADD CONSTRAINT job_id_and_mpid_job_id_mpid_key UNIQUE (job_id, mpid);
+
+
+--
+-- Name: job_source_view job_source_view_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.job_source_view
+    ADD CONSTRAINT job_source_view_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: job_thumbnail_source_view job_thumbnail_source_view_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.job_thumbnail_source_view
+    ADD CONSTRAINT job_thumbnail_source_view_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mt_history mt_history_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.mt_history
+    ADD CONSTRAINT mt_history_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: my_site_category_tree my_site_category_tree_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.my_site_category_tree
+    ADD CONSTRAINT my_site_category_tree_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: node node_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.node
+    ADD CONSTRAINT node_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: node_property node_property_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.node_property
+    ADD CONSTRAINT node_property_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: product_option_view product_option_view_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.product_option_view
+    ADD CONSTRAINT product_option_view_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: program program_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.program
+    ADD CONSTRAINT program_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sm_history sm_history_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.sm_history
+    ADD CONSTRAINT sm_history_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: stage stage_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.stage
+    ADD CONSTRAINT stage_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: task task_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.task
+    ADD CONSTRAINT task_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: test test_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.test
+    ADD CONSTRAINT test_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tpid_mapping tpid_mapping_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.tpid_mapping
+    ADD CONSTRAINT tpid_mapping_pkey PRIMARY KEY (mpid, targetsite_url);
+
+
+--
+-- Name: transformation transformation_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.transformation
+    ADD CONSTRAINT transformation_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: transformation_program transformation_program_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.transformation_program
+    ADD CONSTRAINT transformation_program_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: url_and_zipcode url_and_zipcode_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.url_and_zipcode
+    ADD CONSTRAINT url_and_zipcode_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_program user_program_pkey; Type: CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.user_program
+    ADD CONSTRAINT user_program_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: execution_idx; Type: INDEX; Schema: public; Owner: pse
+--
+
+CREATE INDEX execution_idx ON public.execution USING btree (job_id);
+
+
+--
+-- Name: failed_my_site_detail_idx; Type: INDEX; Schema: public; Owner: pse
+--
+
+CREATE INDEX failed_my_site_detail_idx ON public.failed_my_site_detail USING btree (id, sm_history_id);
+
+
+--
+-- Name: failed_target_site_detail_idx; Type: INDEX; Schema: public; Owner: pse
+--
+
+CREATE INDEX failed_target_site_detail_idx ON public.failed_target_site_detail USING btree (id, mt_history_id);
+
+
+--
+-- Name: job_configuration_idx; Type: INDEX; Schema: public; Owner: pse
+--
+
+CREATE INDEX job_configuration_idx ON public.job_configuration USING btree (id, job_id);
+
+
+--
+-- Name: job_description_source_view_idx; Type: INDEX; Schema: public; Owner: pse
+--
+
+CREATE INDEX job_description_source_view_idx ON public.job_description_source_view USING btree (job_id);
+
+
+--
+-- Name: job_option_source_view_idx; Type: INDEX; Schema: public; Owner: pse
+--
+
+CREATE INDEX job_option_source_view_idx ON public.job_option_source_view USING btree (job_id);
+
+
+--
+-- Name: job_source_view_idx; Type: INDEX; Schema: public; Owner: pse
+--
+
+CREATE INDEX job_source_view_idx ON public.job_source_view USING btree (job_id, status);
+
+
+--
+-- Name: job_thumbnail_source_view_idx; Type: INDEX; Schema: public; Owner: pse
+--
+
+CREATE INDEX job_thumbnail_source_view_idx ON public.job_thumbnail_source_view USING btree (job_id);
+
+
+--
+-- Name: jobs_idx; Type: INDEX; Schema: public; Owner: pse
+--
+
+CREATE INDEX jobs_idx ON public.jobs USING btree (id, user_id);
+
+
+--
+-- Name: mt_history_idx; Type: INDEX; Schema: public; Owner: pse
+--
+
+CREATE INDEX mt_history_idx ON public.mt_history USING btree (id, job_id);
+
+
+--
+-- Name: node_idx; Type: INDEX; Schema: public; Owner: pse
+--
+
+CREATE INDEX node_idx ON public.node USING btree (id, task_id);
+
+
+--
+-- Name: node_property_idx; Type: INDEX; Schema: public; Owner: pse
+--
+
+CREATE INDEX node_property_idx ON public.node_property USING btree (node_id);
+
+
+--
+-- Name: sm_history_idx; Type: INDEX; Schema: public; Owner: pse
+--
+
+CREATE INDEX sm_history_idx ON public.sm_history USING btree (id, job_id);
+
+
+--
+-- Name: stage_idx; Type: INDEX; Schema: public; Owner: pse
+--
+
+CREATE INDEX stage_idx ON public.stage USING btree (id, execution_id);
+
+
+--
+-- Name: targetsite_job_configuration_idx; Type: INDEX; Schema: public; Owner: pse
+--
+
+CREATE INDEX targetsite_job_configuration_idx ON public.targetsite_job_configuration USING btree (id, job_id);
+
+
+--
+-- Name: task_idx; Type: INDEX; Schema: public; Owner: pse
+--
+
+CREATE INDEX task_idx ON public.task USING btree (id, stage_id, status);
+
+
+--
+-- Name: user_program_idx; Type: INDEX; Schema: public; Owner: pse
+--
+
+CREATE INDEX user_program_idx ON public.user_program USING btree (id, job_id);
+
+
+--
+-- Name: delivery_companies delivery_companies_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.delivery_companies
+    ADD CONSTRAINT delivery_companies_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.account(user_id);
+
+
+--
+-- Name: groups groups_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.groups
+    ADD CONSTRAINT groups_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.account(user_id);
+
+
+--
+-- Name: jobs jobs_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.jobs
+    ADD CONSTRAINT jobs_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.account(user_id);
+
+
+--
+-- Name: mt_period mt_period_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.mt_period
+    ADD CONSTRAINT mt_period_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.account(user_id);
+
+
+--
+-- Name: shipping_fee shipping_fee_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.shipping_fee
+    ADD CONSTRAINT shipping_fee_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.account(user_id);
+
+
+--
+-- Name: sm_period sm_period_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.sm_period
+    ADD CONSTRAINT sm_period_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.account(user_id);
+
+
+--
+-- Name: targetsite targetsite_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.targetsite
+    ADD CONSTRAINT targetsite_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.account(user_id);
+
+
+--
+-- Name: tariff_vat_rate tariff_vat_rate_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pse
+--
+
+ALTER TABLE ONLY public.tariff_vat_rate
+    ADD CONSTRAINT tariff_vat_rate_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.account(user_id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
