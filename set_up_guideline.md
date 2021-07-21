@@ -6,8 +6,8 @@ Set up guideline for pse master server
 # 1. Set up locale
 
 
-- sudo locale-gen ko_KR.UTF-8
-- sudo dpkg-reconfigure locales
+1. sudo locale-gen ko_KR.UTF-8
+2. sudo dpkg-reconfigure locales
 
 
 
@@ -15,14 +15,14 @@ Set up guideline for pse master server
 
 
 Add path 
-- vi ~/.bashrc
-- PATH=$PATH:/usr/lib/postgresql/12/bin
+1. vi ~/.bashrc
+2. PATH=$PATH:/usr/lib/postgresql/12/bin
 
 Init postgres db
-- mkdir /var/lib/postgresql/12/main/data 
-- chown postgres:postgres /var/lib/postgresql/12/main/data 
-- sudo pg_ctl -D /var/lib/postgresql/12/main/data initdb
-- (in /main/data) mv * ../ 
+1.  mkdir /var/lib/postgresql/12/main/data 
+2. chown postgres:postgres /var/lib/postgresql/12/main/data 
+3. sudo pg_ctl -D /var/lib/postgresql/12/main/data initdb
+4. (in /main/data) mv * ../ 
 
 
 Create pse database
