@@ -76,5 +76,5 @@ Init airflow database
 - airflow db init
 
 create airflow user (for airflow web)
-- airflow users create -r Admin -u pse -f pse -l pse -p pse -e smlee@dblab.postech.ac.kr
+- airflow users create -r Admin -u pse -f pse -l pse -p pse -e email@address.com
 
