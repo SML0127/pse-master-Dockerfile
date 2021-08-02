@@ -71,6 +71,7 @@ Set up guideline for pse master server
 - load_examples = False
 - web_server_port = 5003
 - result_backend = db+postgresql://airflow:airflow@localhost/airflow
+- broker_url = amqp://guest:guest@localhost:5672//
 
 3.4 Init airflow database
 - airflow db init
