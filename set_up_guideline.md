@@ -78,3 +78,11 @@ Set up guideline for pse master server
 3.5 create airflow user (for airflow web)
 - airflow users create -r Admin -u pse -f pse -l pse -p pse -e email@address.com
 
+
+
+
+# 4. Install airflow version 2.1.1
+
+4.1 Set configure
+- In /etc/redis/redis.conf, replace "bind 127.0.0.1" to "bind 0.0.0.0" 
+
