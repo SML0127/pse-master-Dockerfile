@@ -82,7 +82,7 @@ Set up guideline for pse master server
 
 
 
-# 4. Install airflow version 2.1.1
+# 4. Set redis configuration
 
 4.1 Set configure
 - In /etc/redis/redis.conf, replace "bind 127.0.0.1" to "bind 0.0.0.0" 
