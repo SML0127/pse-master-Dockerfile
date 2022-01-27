@@ -10,4 +10,5 @@ net-tools redis-server rabbitmq-server locales
 RUN useradd -rm -d /home/pse -s /bin/bash -g root -G sudo -u 1001 pse
 RUN ln -sfn /usr/bin/python3.6 /usr/bin/python
 RUN curl https://bootstrap.pypa.io/get-pip.py | sudo -H python3.6
-ENTRYPOINT ["sh", "/home/pse/run-server.sh"]
+ENTRYPOINT ["sh"]
+CMD ["/home/pse/run-server.sh"]
