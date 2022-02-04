@@ -1,0 +1,18 @@
+version: '3'
+services:
+    master:
+        container_name: master
+        image: pse-master:1.0
+        ports:
+            - "54320:5432"
+            - "5000:5000"
+            - "5001:5001"
+            - "5002:5002"
+            - "5003:5003"
+            - "3000:3000"
+            - "20220:22"
+            - "63790:6379"
+        volumes:
+            - ~/mnt/md0/pse/postgresql/9.5/main/:/var/lib/postgresql/9.5/main/:z
+        command: sh -c "/home/pse/run-server.sh"
+        tty: true
