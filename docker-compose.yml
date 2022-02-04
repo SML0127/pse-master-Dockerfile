@@ -14,5 +14,6 @@ services:
             - "63790:6379"
         volumes:
             - ~/mnt/md0/pse/postgresql/9.5/main/:/var/lib/postgresql/9.5/main/:z
+        privileged: true
         command: sh -c "/home/pse/run-server.sh"
         tty: true
